@@ -1,0 +1,31 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3002"  # для фронтенда
+      - "3001:3001"  # для бэкенда
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - VITE_API_URL=http://localhost:3001
+    command: npm run dev
+
+# Если вам нужен Redis или другие сервисы, добавьте их здесь
+# redis:
+#   image: redis:alpine
+#   ports:
+#     - "6379:6379" 
+
+networks:
+  default:
+    driver: bridge 
+
+volumes:
+  frontend_node_modules:
+  backend_node_modules: 
